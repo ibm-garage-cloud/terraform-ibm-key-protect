@@ -2,7 +2,7 @@ provider "ibm" {
   version = ">= 1.2.1"
 }
 
-data "ibm_resource_group" "tools_resource_group" {
+data "ibm_resource_group" "resource_group" {
   name = var.resource_group_name
 }
 
@@ -10,12 +10,12 @@ locals {
   name_prefix     = var.name_prefix != "" ? var.name_prefix : var.resource_group_name
 }
 
-resource "ibm_resource_instance" "studio_instance" {
+resource "ibm_resource_instance" "keyprotect_instance" {
   name              = "${replace(local.name_prefix, "/[^a-zA-Z0-9_\\-\\.]/", "")}-keyprotect"
   service           = "kms"
   plan              = var.plan
   location          = var.resource_location
-  resource_group_id = data.ibm_resource_group.tools_resource_group.id
+  resource_group_id = data.ibm_resource_group.resource_group.id
   tags              = var.tags
 
   timeouts {

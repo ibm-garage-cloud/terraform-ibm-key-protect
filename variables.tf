@@ -27,6 +27,6 @@ variable "name_prefix" {
 
 variable "plan" {
   type        = string
-  description = "The type of plan the service instance should run under (standard-v1, enterprise-v2)"
-  default     = "standard-v1"
+  description = "The type of plan the service instance should run under (tiered-pricing)"
+  default     = "tiered-pricing"
 }
