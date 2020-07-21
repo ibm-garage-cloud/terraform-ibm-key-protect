@@ -25,3 +25,8 @@ variable "plan" {
   description = "The type of plan the service instance should run under (tiered-pricing)"
   default     = "tiered-pricing"
 }
+
+variable "provision" {
+  type        = bool
+  description = "Flag indicating that key-protect instance should be provisioned"
+}
