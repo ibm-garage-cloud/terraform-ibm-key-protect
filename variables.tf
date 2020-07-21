@@ -8,11 +8,6 @@ variable "resource_location" {
   description = "Geographic location of the resource (e.g. us-south, us-east)"
 }
 
-variable "cluster_id" {
-  type        = string
-  description = "Id of the cluster"
-}
-
 variable "tags" {
   type        = list(string)
   description = "Tags that should be applied to the service"
