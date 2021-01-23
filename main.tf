@@ -1,5 +1,6 @@
 provider "ibm" {
-  version = ">= 1.9.0"
+  version = ">= 1.17.0"
+  ibmcloud_api_key = var.ibmcloud_api_key
 }
 
 data "ibm_resource_group" "resource_group" {
@@ -80,7 +81,7 @@ data "ibm_iam_access_group" "admin" {
 resource "ibm_iam_access_group_policy" "admin_policy" {
   count = var.admin-access-group != "" ? 1 : 0
 
-  access_group_id = element(data.ibm_iam_access_group.admin.*.id, count.index)
+  access_group_id = data.ibm_iam_access_group.admin[0].id
   roles           = ["Administrator", "Manager", "ReaderPlus"]
   resources {
     service           = local.service
@@ -97,7 +98,7 @@ data "ibm_iam_access_group" "user" {
 resource "ibm_iam_access_group_policy" "user_policy" {
   count = var.user-access-group != "" ? 1 : 0
 
-  access_group_id = element(data.ibm_iam_access_group.user.*.id, count.index)
+  access_group_id = data.ibm_iam_access_group.user[0].id
   roles           = ["Operator", "Reader", "ReaderPlus"]
   resources {
     service           = local.service
