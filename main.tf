@@ -11,13 +11,14 @@ locals {
   name        = var.name != "" ? var.name : "${replace(local.name_prefix, "/[^a-zA-Z0-9_\\-\\.]/", "")}-keyprotect"
   bind        = (var.provision || (!var.provision && var.name != "")) && var.cluster_name != ""
   module_path = substr(path.module, 0, 1) == "/" ? path.module : "./${path.module}"
+  service     = "kms"
 }
 
 resource "ibm_resource_instance" "keyprotect_instance" {
   count = var.provision ? 1 : 0
 
   name              = local.name
-  service           = "kms"
+  service           = local.service
   plan              = var.plan
   location          = var.resource_location
   resource_group_id = data.ibm_resource_group.resource_group.id
@@ -37,7 +38,7 @@ data "ibm_resource_instance" "keyprotect_instance" {
   name              = local.name
   resource_group_id = data.ibm_resource_group.resource_group.id
   location          = var.resource_location
-  service           = "kms"
+  service           = local.service
 }
 
 resource "null_resource" "keyprotect_secret" {
@@ -67,5 +68,39 @@ resource "null_resource" "keyprotect_secret" {
     environment = {
       KUBECONFIG = self.triggers.kubeconfig
     }
+  }
+}
+
+data "ibm_iam_access_group" "admin" {
+  count = var.admin-access-group != "" ? 1 : 0
+
+  name  = var.admin-access-group
+}
+
+resource "ibm_iam_access_group_policy" "admin_policy" {
+  count = var.admin-access-group != "" ? 1 : 0
+
+  access_group_id = element(data.ibm_iam_access_group.admin.*.id, count.index)
+  roles           = ["Administrator", "Manager", "ReaderPlus"]
+  resources {
+    service           = local.service
+    resource_group_id = data.ibm_resource_group.resource_group.id
+  }
+}
+
+data "ibm_iam_access_group" "user" {
+  count = var.user-access-group != "" ? 1 : 0
+
+  name  = var.user-access-group
+}
+
+resource "ibm_iam_access_group_policy" "user_policy" {
+  count = var.user-access-group != "" ? 1 : 0
+
+  access_group_id = element(data.ibm_iam_access_group.user.*.id, count.index)
+  roles           = ["Operator", "Reader", "ReaderPlus"]
+  resources {
+    service           = local.service
+    resource_group_id = data.ibm_resource_group.resource_group.id
   }
 }

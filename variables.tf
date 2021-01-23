@@ -60,3 +60,15 @@ variable "ibmcloud_api_key" {
   description = "The api key for IBM Cloud access"
   default     = ""
 }
+
+variable "admin-access-group" {
+  type        = string
+  description = "The name of the existing access group that should be updated with Key Protect admin permissions"
+  default     = ""
+}
+
+variable "user-access-group" {
+  type        = string
+  description = "The name of the existing access group that should be updated with Key Protect user permissions"
+  default     = ""
+}
