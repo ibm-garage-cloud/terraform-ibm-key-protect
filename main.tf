@@ -74,7 +74,7 @@ resource "null_resource" "keyprotect_secret" {
 data "ibm_iam_access_group" "admin" {
   count = var.admin-access-group != "" ? 1 : 0
 
-  name  = var.admin-access-group
+  access_group_name = var.admin-access-group
 }
 
 resource "ibm_iam_access_group_policy" "admin_policy" {
@@ -91,7 +91,7 @@ resource "ibm_iam_access_group_policy" "admin_policy" {
 data "ibm_iam_access_group" "user" {
   count = var.user-access-group != "" ? 1 : 0
 
-  name  = var.user-access-group
+  access_group_name = var.user-access-group
 }
 
 resource "ibm_iam_access_group_policy" "user_policy" {
