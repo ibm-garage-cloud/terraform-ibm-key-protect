@@ -10,4 +10,5 @@ module "dev_key_protect" {
   tools_namespace          = module.dev_capture_state.namespace
   admin-access-group       = var.admin_access_group
   user-access-group        = var.user_access_group
+  ibmcloud_api_key         = var.ibmcloud_api_key
 }
