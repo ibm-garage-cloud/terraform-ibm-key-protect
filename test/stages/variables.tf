@@ -20,6 +20,16 @@ variable "namespace" {
   description = "Namespace for tools"
 }
 
+variable "user_access_group" {
+  type        = string
+  description = "User access group"
+}
+
+variable "admin_access_group" {
+  type        = string
+  description = "Admin access group"
+}
+
 variable "cluster_name" {
   type        = string
   description = "The name of the cluster"
